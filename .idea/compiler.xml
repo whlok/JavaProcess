@@ -3,16 +3,19 @@
   <component name="CompilerConfiguration">
     <option name="BUILD_PROCESS_ADDITIONAL_VM_OPTIONS" value="-Xss4M" />
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Jvm" />
+        <module name="EffectiveJava" />
+        <module name="NettyLearn" />
         <module name="DataStructure" />
         <module name="Juc" />
+        <module name="DesignPatterns" />
         <module name="Asdev" />
-        <module name="EffectiveJava" />
         <module name="Algorithm" />
-        <module name="DesginPatterns" />
       </profile>
     </annotationProcessing>
   </component>
