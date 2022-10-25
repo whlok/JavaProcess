@@ -11,7 +11,9 @@ import static io.netty.util.internal.StringUtil.NEWLINE;
  */
 public class TestByteBuf {
 	public static void main(String[] args) {
+		// 可以动态扩容。默认是直接内存，heapbuffer是堆内存
 		ByteBuf buf = ByteBufAllocator.DEFAULT.buffer();
+		System.out.println(buf.getClass());
 		log(buf);
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < 32; i++) {

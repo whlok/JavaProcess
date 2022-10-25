@@ -20,12 +20,14 @@ public class TestJdkFuture {
 			@Override
 			public Integer call() throws Exception {
 				log.debug("执行计算");
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 				return 50;
 			}
 		});
 		//3.主线程通过future来获取结果
 		log.debug("等待结果");
 		log.debug("结果是{}", future.get());
+		log.debug("输出结果");
+
 	}
 }

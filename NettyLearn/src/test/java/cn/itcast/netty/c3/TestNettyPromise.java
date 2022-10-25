@@ -13,10 +13,10 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 public class TestNettyPromise {
 	public static void main(String[] args) throws ExecutionException, InterruptedException {
-		//1
+		//1 准备EventLoop 对象
 		EventLoop eventLoop = new NioEventLoopGroup().next();
 
-		//2
+		//2 可以主动创建容器，结果容器
 		DefaultPromise<Integer> promise = new DefaultPromise<>(eventLoop);
 
 		new Thread(() -> {
