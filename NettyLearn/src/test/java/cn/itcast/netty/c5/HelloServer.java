@@ -18,13 +18,17 @@ import org.slf4j.LoggerFactory;
 public class HelloServer {
 	static final Logger log = LoggerFactory.getLogger(HelloServer.class);
 
+	public static void main(String[] args) {
+		new HelloServer().start();
+	}
+
 	void start() {
-		NioEventLoopGroup boss = new NioEventLoopGroup(1);
+		NioEventLoopGroup boss = new NioEventLoopGroup();
 		NioEventLoopGroup worker = new NioEventLoopGroup();
 		try {
 			ServerBootstrap serverBootstrap = new ServerBootstrap()
 					.channel(NioServerSocketChannel.class)
-					.option(ChannelOption.SO_RCVBUF, 3)
+					.option(ChannelOption.SO_RCVBUF, 10)
 					.group(boss, worker)
 					.childHandler(new ChannelInitializer<SocketChannel>() {
 						@Override
@@ -60,9 +64,5 @@ public class HelloServer {
 			worker.shutdownGracefully();
 			log.debug("stopped");
 		}
-	}
-
-	public static void main(String[] args) {
-		new HelloServer().start();
 	}
 }
