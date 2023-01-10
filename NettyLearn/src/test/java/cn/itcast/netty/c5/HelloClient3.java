@@ -12,19 +12,17 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Random;
+
 /**
+ * 使用定长解码器。
+ *
  * @author wenhoulai
  */
-public class HelloClient {
-	static final Logger log = LoggerFactory.getLogger(HelloClient.class);
+public class HelloClient3 {
+	static final Logger log = LoggerFactory.getLogger(HelloClient3.class);
 
 	public static void main(String[] args) {
-		for (int i = 0; i < 10; i++) {
-			send();
-		}
-	}
-
-	private static void send() {
 		NioEventLoopGroup worker = new NioEventLoopGroup();
 		try {
 			Bootstrap bootstrap = new Bootstrap()
@@ -37,15 +35,20 @@ public class HelloClient {
 							ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
 								@Override
 								public void channelActive(ChannelHandlerContext ctx) throws Exception {
+									char c = 'a';
 									log.debug("sending...");
 									// 每次发送16个字节的数据，共发送10次
-
-									ByteBuf buffer = ctx.alloc().buffer(16);
-									buffer.writeBytes(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
-									ctx.writeAndFlush(buffer);
-									// 使用短连接解决粘包
-									ctx.channel().close();
-
+									for (int i = 0; i < 10; i++) {
+										ByteBuf buffer = ctx.alloc().buffer(16);
+										byte[] bytes = new byte[16];
+										Random r = new Random();
+										for (int j = 0; j < r.nextInt(16) + 1; j++) {
+											bytes[i] = (byte) c;
+										}
+										buffer.writeBytes(bytes);
+										c++;
+										ctx.writeAndFlush(buffer);
+									}
 								}
 							});
 						}

@@ -13,18 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 使用定长解码器。
+ *
  * @author wenhoulai
  */
-public class HelloClient {
-	static final Logger log = LoggerFactory.getLogger(HelloClient.class);
+public class HelloClient2 {
+	static final Logger log = LoggerFactory.getLogger(HelloClient2.class);
 
 	public static void main(String[] args) {
-		for (int i = 0; i < 10; i++) {
-			send();
-		}
-	}
-
-	private static void send() {
 		NioEventLoopGroup worker = new NioEventLoopGroup();
 		try {
 			Bootstrap bootstrap = new Bootstrap()
@@ -37,15 +33,24 @@ public class HelloClient {
 							ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
 								@Override
 								public void channelActive(ChannelHandlerContext ctx) throws Exception {
-									log.debug("sending...");
-									// 每次发送16个字节的数据，共发送10次
-
-									ByteBuf buffer = ctx.alloc().buffer(16);
-									buffer.writeBytes(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
-									ctx.writeAndFlush(buffer);
-									// 使用短连接解决粘包
-									ctx.channel().close();
-
+									// 约定最大长度为16
+									final int maxLength = 16;
+									// 被发送的数据
+									char c = 'a';
+									// 向服务器发送10个报文
+									for (int i = 0; i < 10; i++) {
+										ByteBuf buffer = ctx.alloc().buffer(maxLength);
+										// 定长byte数组，未使用部分会以0进行填充
+										byte[] bytes = new byte[maxLength];
+										// 生成长度为0~15的数据
+										for (int j = 0; j < (int) (Math.random() * (maxLength - 1)); j++) {
+											bytes[j] = (byte) c;
+										}
+										buffer.writeBytes(bytes);
+										c++;
+										// 将数据发送给服务器
+										ctx.writeAndFlush(buffer);
+									}
 								}
 							});
 						}

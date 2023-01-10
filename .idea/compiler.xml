@@ -16,6 +16,7 @@
         <module name="DesignPatterns" />
         <module name="Asdev" />
         <module name="Algorithm" />
+        <module name="DesginPatterns" />
       </profile>
     </annotationProcessing>
   </component>
